@@ -1,58 +1,64 @@
-package クラス練習問題;
+package practiceproblems;
 
 import java.util.Random;
 import java.util.Scanner;
 
-public class JankenIf{
-	public static void main(String[] args){
-		int user = getUser();
-		int pc = getPc();
-		String result = judgeJanken(user,pc);
-		showResult(user,pc,result);
+/*ルール
+ * グーはチョキに勝つ。パーはグーに勝つ。チョキはパーに勝つ
+ * 「無敵」グーチョキパー全てに勝てるが無敵返しにのみ負ける
+ * 「無敵返し」グーチョキパーに全てに負けるが無敵にのみ勝てる
+ * 「神」パーにのみ負ける*/
+public class JankenIf {
+	public static void main(String[] args) {
+		int user = thinkUser();
+		int pc = thinkPC();
+		String result = judgeJanken(user, pc);
+		showResult(user, pc, result);
 	}
-	public static int getUser(){
-		Scanner s = new Scanner(System.in);
-		while (true){
+
+	public static int thinkUser() {
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
 			System.out.println("あなたのじゃんけんの手を入力してください");
-			System.out.println("(グー：０,チョキ：１,パー：２,無敵：3,無敵返し:4)");
-			if(s.hasNextInt()){
-				int number = s.nextInt();
-				if(number <= -1 || number >= 5){
-					System.out.println("【エラー】入力できるのは０～4です。");
+			System.out.println("(グー：０,チョキ：１,パー：２,無敵：3,無敵返し:4,神:)");
+			if (scanner.hasNextInt()) {
+				int number = scanner.nextInt();
+				if (number <= -1 || number >= 6) {
+					System.out.println("【エラー】入力できるのは０～5です。");
 					continue;
-				}else {
+				} else {
 					return number;
 				}
-			}else{
+			} else {
 				System.out.println("入力できるのは整数のみです。");
-				s.next();
+				scanner.next();
 			}
 
 		}
 	}
 
-public static int getPc(){
-	Random rand = new Random();
-	return rand.nextInt(4);
-}
-public static String judgeJanken(int user,int pc){
-	String result = "";
-	if((user == 0 && pc == 1) || (user == 1 && pc == 2) || (user == 2 && pc == 0)||(user==3 && pc==0)||(user==3&&pc==1)||(user==3&&pc==2)||(user==4&&pc==3)){
-		result="勝ち";
-	}else if((user == 0 && pc == 2) || (user == 1 && pc == 0) || (user == 2 && pc == 1)||(user==0&&pc==3)||(user==1&&pc==3)||(user==2&&pc==3)||(user==4&&pc==0)||(user==4&&pc==1)||(user==4&&pc==2)){
-		result="負け";
-	}else {
-		result="あいこ";
+	public static int thinkPC() {
+		Random rand = new Random();
+		return rand.nextInt(5);
 	}
-	return result;
+
+	public static String judgeJanken(int user, int pc) {
+		String[][] matrix = {
+				//user       グー    チョキ      パー      無敵     返し   神  pc
+				/*グー*/ { "あいこ", "勝ち", "負け", "勝ち", "負け", "勝ち" },
+				/*チョキ*/ { "負け", "あいこ", "勝ち", "勝ち", "負け", "勝ち" },
+				/*パー*/ { "勝ち", "負け", "あいこ", "勝ち", "  負け", "負け" },
+				/*無敵*/ { "勝ち", "勝ち", "勝ち", "あいこ", "勝ち", "勝ち" },
+				/*返し*/ { "負け", "負け", "負け", "負け", "あいこ", "勝ち" },
+				/*神*/ { "勝ち", "勝ち", "負け", "勝ち", "勝ち", "あいこ", }
+		};
+		return matrix[user][pc];
+	}
+
+	public static void showResult(int user, int pc, String result) {
+		String[] janken = { "グー", "チョキ", "パー", "無敵", "無敵返し", "神" };//配列の添字は０番～始まる
+		System.out.println("あなたの手:" + janken[user] + ",コンピュータの手" + janken[pc]);
+		System.out.println("結果:" + result);
+	}
+
 }
-public static void showResult(int user,int pc,String result){
-	String[] janken = {"グー","チョキ","パー","無敵","無敵返し"};//配列の添字は０番～始まる
-	System.out.println("あなたの手:"+janken[user]+",コンピュータの手"+janken[pc]);
-	System.out.println("結果:"+result); 
-}
-
-
-}
-
-
