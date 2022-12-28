@@ -8,7 +8,7 @@ import java.util.Scanner;
  * 「無敵」グーチョキパー全てに勝てるが無敵返しにのみ負ける
  * 「無敵返し」グーチョキパーに全てに負けるが無敵にのみ勝てる
  * 「神」パーにのみ負ける*/
-public class JankenIf {
+public class Janken {
 	public static void main(String[] args) {
 		int user = thinkUser();
 		int pc = thinkPC();
